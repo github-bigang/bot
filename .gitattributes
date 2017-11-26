@@ -1,0 +1,5 @@
+runs/1511667468/checkpoints/model-252.data-00000-of-00001 filter=lfs diff=lfs merge=lfs -text
+runs/1511667468/checkpoints/model-252.index filter=lfs diff=lfs merge=lfs -text
+runs/1511667468/checkpoints/model-252.meta filter=lfs diff=lfs merge=lfs -text
+resources/w2v_cn_wiki_100.txt filter=lfs diff=lfs merge=lfs -text
+resources/ltp_data_v3.4.0/cws.model filter=lfs diff=lfs merge=lfs -text
