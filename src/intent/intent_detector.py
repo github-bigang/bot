@@ -100,7 +100,7 @@ if __name__=="__main__":
     d = intent_detector()
     import sys
     start_time = time.time()
-    pred_label = d.detect(sys.argv[1], label=None, save_path=sys.argv[2])
+    pred_label = d.detect(sys.argv[1], label=None, save_path=sys.argv[2] if len(sys.argv) > 2 else None)
     print(pred_label)
     elapsed_time = time.time() - start_time
-    print(elapsed_time)
+    print('Elapsed time:' + str(elapsed_time))
