@@ -4,37 +4,17 @@ import tensorflow as tf
 import numpy as np
 import os
 import time
-import datetime
 import data_helpers
-from text_cnn import TextCNN
 from tensorflow.contrib import learn
 import csv
 from utils.vocab_utils import Vocab
 
 class intent_detector:
-    def __init__(self, model_path='runs/1511667468/checkpoints/'):
+    def __init__(self, model_path='runs/1511666657/checkpoints/'):
         #1511667468 for char
         #1511666657 for no char
         # Parameters
         self.model_path = model_path
-#         tf.flags.DEFINE_string("data_path", "./data/intent/small/", "Path for the intent data.")
-#         
-#         # Eval Parameters
-#         tf.flags.DEFINE_integer("batch_size", 2, "Batch Size (default: 64)")
-# #         tf.flags.DEFINE_string("checkpoint_dir", "runs/1511626669/checkpoints/", "Checkpoint directory from training run")
-#         tf.flags.DEFINE_boolean("eval_train", False, "Evaluate on all training data")
-#         
-#         # Misc Parameters
-#         tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
-#         tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
-#         
-#         
-#         FLAGS = tf.flags.FLAGS
-#         FLAGS._parse_flags()
-#         print("\nParameters:")
-#         for attr, value in sorted(FLAGS.__flags.items()):
-#             print("{}={}".format(attr.upper(), value))
-#         print("")
 
         self.word_vocab = Vocab('resources/w2v_cn_wiki_100.txt', fileformat='txt3')
         self.max_document_length, self.max_document_char_length = 17, 27
@@ -62,9 +42,13 @@ class intent_detector:
                 # Tensors we want to evaluate
                 self.predictions = graph.get_operation_by_name("output/predictions").outputs[0]
 
+        from utils.segment import segment
+        self.seg = segment()
+        
     def detect(self, sentence, label = None, save_path=None):
-        x_raw = [self.word_vocab.to_index_sequence(' '.join([x.decode('utf-8') for x in sentence.split(' ')]))]
-        all_chars = [''.join([x + ' ' for x in sentence.replace(' ', '').decode('utf-8')])]
+        sent = self.seg.seg(sentence)
+        x_raw = [self.word_vocab.to_index_sequence(' '.join([x.decode('utf-8') for x in sent]))]
+        all_chars = [''.join([x + ' ' for x in sentence.decode('utf-8')])]
         x_chars = np.array(list(self.vocab_processor.fit_transform(all_chars)))
         y_test = None
         if label: 

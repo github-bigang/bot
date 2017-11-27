@@ -22,7 +22,7 @@ tf.flags.DEFINE_integer("batch_size", 2, "Batch Size (default: 64)")
 #1511626669 for no char originally
 #1511667468 for char
 #1511666657 for no char
-tf.flags.DEFINE_string("checkpoint_dir", "runs/1511667468/checkpoints/", "Checkpoint directory from training run") # 
+tf.flags.DEFINE_string("checkpoint_dir", "runs/1511666657/checkpoints/", "Checkpoint directory from training run") # 
 tf.flags.DEFINE_boolean("eval_train", False, "Evaluate on all training data")
 
 # Misc Parameters
