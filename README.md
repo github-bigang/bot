@@ -5,3 +5,6 @@
 5. Go to root of the project folder, run 'export PYTHONPATH=src:$PYTHONPATH'
 6. Run 'python src/intent/intent_detector.py "你喜不喜欢我"', you will get predicted label 1 and the time elapsed for this prediction excluding initialization time.
 
+7. To train, copy data file to data/intent/small/intent.train, if you have test file, copy it to data/intent/small/intent.test
+8. Run 'python src/utils/segment.py', you will get 2 new files at data/intent/small
+9. Run 'python src/intent/train.py'
