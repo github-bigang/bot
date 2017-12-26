@@ -38,12 +38,14 @@ def load_data_and_labels(word_vocab, intentSegFile, vocab_processor=None, out_di
     print('label distribution: ' + ' '.join([str(x) for x in label_dist]))
     # Build vocabulary
     max_document_length = max([len(x) for x in texts])
+    if max_document_length > 50: max_document_length = 50
     max_document_char_length = max([len(x.split(" ")) for x in all_chars])
+    if max_document_char_length > 100: max_document_char_length = 100
     if not vocab_processor:
         vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_char_length)
         vocab_processor.save(os.path.join(out_dir, "vocab"))
     x_chars = np.array(list(vocab_processor.fit_transform(all_chars)))
-    print('max sentence length: ' + str(max_document_length) + 'max sentence char length: ' + str(max_document_char_length))
+    print('max sentence length: ' + str(max_document_length) + ' max sentence char length: ' + str(max_document_char_length))
     return texts, y, x_chars, max_document_length, max_document_char_length, len(vocab_processor.vocabulary_)
 
 
