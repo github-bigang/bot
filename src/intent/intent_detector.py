@@ -10,7 +10,7 @@ import csv
 from utils.vocab_utils import Vocab
 
 class intent_detector:
-    def __init__(self, model_path='runs/1511666657/checkpoints/'):
+    def __init__(self, model_path='runs/1514477731/checkpoints/'):
         #1511667468 for char
         #1511666657 for no char
         # Parameters
@@ -41,6 +41,7 @@ class intent_detector:
         
                 # Tensors we want to evaluate
                 self.predictions = graph.get_operation_by_name("output/predictions").outputs[0]
+                self.scores = graph.get_operation_by_name("output/scores").outputs[0]
 
         from utils.segment import segment
         self.seg = segment()
@@ -77,10 +78,10 @@ class intent_detector:
         all_predictions = []
 
         for x_test_batch in batches:
-            batch_predictions = self.sess.run(self.predictions, {self.input_x: [x[0] for x in x_test_batch], self.input_x_char: [x[1] for x in x_test_batch], self.dropout_keep_prob: 1.0})
+            batch_predictions, batch_scores = self.sess.run([self.predictions, self.scores], {self.input_x: [x[0] for x in x_test_batch], self.input_x_char: [x[1] for x in x_test_batch], self.dropout_keep_prob: 1.0})
 #             batch_predictions = self.sess.run(self.predictions, {self.input_x: x_test_batch, self.dropout_keep_prob: 1.0})
             all_predictions = np.concatenate([all_predictions, batch_predictions])
-
+        print(batch_scores)
         # Print accuracy if y_test is defined
         if y_test is not None:
             correct_predictions = float(sum(all_predictions == y_test))

@@ -62,13 +62,14 @@ class TextCNN(object):
             b = tf.Variable(tf.constant(0.1, shape=[num_classes]), name="b")
             l2_loss += tf.nn.l2_loss(W)
             l2_loss += tf.nn.l2_loss(b)
-            self.scores = tf.nn.xw_plus_b(self.h_drop, W, b, name="scores")
+            self.raw_scores = tf.nn.xw_plus_b(self.h_drop, W, b)
+            self.scores = tf.nn.softmax(self.raw_scores, name="scores")
             self.predictions = tf.argmax(self.scores, 1, name="predictions")
 
         # CalculateMean cross-entropy loss
         with tf.name_scope("loss"):
 #            losses = tf.nn.softmax_cross_entropy_with_logits(self.scores, self.input_y)
-            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.scores, labels=self.input_y)
+            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.raw_scores, labels=self.input_y)
             self.loss = tf.reduce_mean(losses) + l2_reg_lambda * l2_loss
 
         # Accuracy
